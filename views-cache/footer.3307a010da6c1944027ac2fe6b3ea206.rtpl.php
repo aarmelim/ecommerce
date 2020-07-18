@@ -8,6 +8,7 @@
                     <p>Oferecemos trabalho de Consultoria de Moda e Imagem focando nas necessidades pessoais e formato visual. Criamos looks que se encaixam e atendam todas as necessidades e desejos das pessoas.</p>
                     <div class="footer-social">
                         <a href="https://www.instagram.com/anna_k_store" target="_blank"><i class="fa fa-instagram"></i></a>
+                        <a href="https://api.whatsapp.com/send?phone=5511984022526&text=Ola" target="_blank"><i class="fa fa-envelope"></i></a>
                     </div>
                 </div>
             </div>
