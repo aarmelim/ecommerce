@@ -3,6 +3,7 @@
 use \aarmelim\Page;
 use \aarmelim\Model\Category;
 use \aarmelim\Model\Product;
+use \aarmelim\Model\Cart;
 
 $app->get('/', function() {
 
@@ -57,6 +58,16 @@ $app->get("/products/:desurl", function($desurl){
 		'product'=>$product->getValues(),
 		'categories'=>$product->getCategories()
 	]);
+
+});
+
+$app->get("/cart", function(){
+
+	$cart = Cart::getFromSession();
+	
+	$page = new Page();
+
+	$page->setTpl("cart");
 
 });
 
