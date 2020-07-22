@@ -13,6 +13,7 @@ class User extends Model
     const SECRET = "AnnaKStoreSecret";
     const SECRET_IV = "AnnaKStoreSecret_IV";
     const ERROR = "UserError";
+    const ERROR_REGISTER = "RegisterError";
     
     public static function getFromSession()
 	{
@@ -101,10 +102,15 @@ class User extends Model
     {
         if (!User::checkLogin($inadmin))
         {
-            header("Location: /admin/login");
+            
+            if ($inadmin) {
+                header("Location: /admin/login");
+            }
+            else {
+                header("Location: /login");
+            }
             exit;
-        } else{
-            header("Location: /login");
+
         }
     }
 
@@ -336,4 +342,44 @@ class User extends Model
 
     }
 
+    public static function setErrorRegister($msg)
+	{
+
+		$_SESSION[User::ERROR_REGISTER] = $msg;
+
+    }
+    
+	public static function getErrorRegister()
+	{
+
+		$msg = (isset($_SESSION[User::ERROR_REGISTER]) && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[User::ERROR_REGISTER] : '';
+
+		User::clearErrorRegister();
+
+		return $msg;
+
+	}
+
+	public static function clearErrorRegister()
+	{
+
+		$_SESSION[User::ERROR_REGISTER] = NULL;
+
+	}
+
+    public static function checkLoginExist($login)
+	{
+
+		$sql = new Sql();
+
+		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [
+			':deslogin'=>$login
+		]);
+
+		return (count($results) > 0);
+
+	}
+
 }
+
+?>
