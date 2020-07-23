@@ -14,6 +14,7 @@ class User extends Model
     const SECRET_IV = "AnnaKStoreSecret_IV";
     const ERROR = "UserError";
     const ERROR_REGISTER = "RegisterError";
+    const SUCCESS = "UserSuccess";
     
     public static function getFromSession()
 	{
@@ -341,6 +342,31 @@ class User extends Model
 
 	}
 
+	public static function setSuccess($msg)
+	{
+
+		$_SESSION[User::SUCCESS] = $msg;
+
+	}
+
+	public static function getSuccess()
+	{
+
+		$msg = (isset($_SESSION[User::SUCCESS]) && $_SESSION[User::SUCCESS]) ? $_SESSION[User::SUCCESS] : '';
+
+		User::clearSuccess();
+
+		return $msg;
+
+	}
+
+	public static function clearSuccess()
+	{
+
+		$_SESSION[User::SUCCESS] = NULL;
+
+	}
+
     public static function getPasswordHash($password)
     {
 
@@ -388,6 +414,19 @@ class User extends Model
 
 	}
 
+
+    public static function checkLoginExists($login)
+	{
+
+		$sql = new Sql();
+
+		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [
+			':deslogin'=>$login
+		]);
+
+		return (count($results) > 0);
+
+	}
 }
 
 ?>

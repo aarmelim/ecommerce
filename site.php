@@ -143,17 +143,125 @@ $app->get("/checkout", function(){
 
 	User::verifyLogin(false);
 
-	$cart = Cart::getFromSession();
-	
 	$address = new Address();
+	$cart = Cart::getFromSession();
+
+	if (!isset($_GET['zipcode'])) {
+
+		$_GET['zipcode'] = $cart->getdeszipcode();
+
+	}
+
+	if (isset($_GET['zipcode'])) {
+
+		$address->loadFromCEP($_GET['zipcode']);
+
+		$cart->setdeszipcode($_GET['zipcode']);
+
+		$cart->save();
+
+		$cart->getCalculateTotal();
+
+	}
+
+	if (!$address->getdesaddress()) $address->setdesaddress('');
+	if (!$address->getdesnumber()) $address->setdesnumber('');
+	if (!$address->getdescomplement()) $address->setdescomplement('');
+	if (!$address->getdesdistrict()) $address->setdesdistrict('');
+	if (!$address->getdescity()) $address->setdescity('');
+	if (!$address->getdesstate()) $address->setdesstate('');
+	if (!$address->getdescountry()) $address->setdescountry('');
+	if (!$address->getdeszipcode()) $address->setdeszipcode('');
 
 	$page = new Page();
 
-	$page->setTpl("checkout",[
+	$page->setTpl("checkout", [
 		'cart'=>$cart->getValues(),
-		'address'=>$address->getValues()
+		'address'=>$address->getValues(),
+		'products'=>$cart->getProducts(),
+		'error'=>Address::getMsgError()
 	]);
+
 });
+
+$app->post("/checkout", function(){
+
+	User::verifyLogin(false);
+
+	if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
+		Address::setMsgError("Informe o CEP.");
+		header('Location: /checkout');
+		exit;
+	}
+
+	if (!isset($_POST['desaddress']) || $_POST['desaddress'] === '') {
+		Address::setMsgError("Informe o endereço.");
+		header('Location: /checkout');
+		exit;
+	}
+
+	if (!isset($_POST['desnumber']) || $_POST['desnumber'] === '') {
+		Address::setMsgError("Informe o número.");
+		header('Location: /checkout');
+		exit;
+	}
+
+	if (!isset($_POST['desdistrict']) || $_POST['desdistrict'] === '') {
+		Address::setMsgError("Informe o bairro.");
+		header('Location: /checkout');
+		exit;
+	}
+
+	if (!isset($_POST['descity']) || $_POST['descity'] === '') {
+		Address::setMsgError("Informe a cidade.");
+		header('Location: /checkout');
+		exit;
+	}
+
+	if (!isset($_POST['desstate']) || $_POST['desstate'] === '') {
+		Address::setMsgError("Informe o estado.");
+		header('Location: /checkout');
+		exit;
+	}
+
+	if (!isset($_POST['descountry']) || $_POST['descountry'] === '') {
+		Address::setMsgError("Informe o país.");
+		header('Location: /checkout');
+		exit;
+	}
+
+	$user = User::getFromSession();
+
+	$address = new Address();
+
+	$_POST['deszipcode'] = $_POST['zipcode'];
+	$_POST['idperson'] = $user->getidperson();
+
+	$address->setData($_POST);
+
+	$address->save();
+
+	$cart = Cart::getFromSession();
+
+	$cart->getCalculateTotal();
+
+	$order = new Order();
+
+	$order->setData([
+		'idcart'=>$cart->getidcart(),
+		'idaddress'=>$address->getidaddress(),
+		'iduser'=>$user->getiduser(),
+		'idstatus'=>OrderStatus::EM_ABERTO,
+		'vltotal'=>$cart->getvltotal()
+	]);
+
+	$order->save();
+
+	header("Location: /order/".$order->getidorder());
+	exit;
+
+});
+
 
 $app->get("/login", function(){
 
@@ -307,6 +415,70 @@ $app->post("/forgot/reset", function(){
 	$page = new Page();
 
 	$page->setTpl("forgot-reset-success");
+
+});
+
+$app->get("/profile", function(){
+
+	User::verifyLogin(false);
+
+	$user = User::getFromSession();
+
+	$page = new Page();
+
+	$page->setTpl("profile", [
+		'user'=>$user->getValues(),
+		'profileMsg'=>User::getSuccess(),
+		'profileError'=>User::getMsgError()
+	]);
+
+});
+
+$app->post("/profile", function(){
+
+	User::verifyLogin(false);
+	
+	if (!isset($_POST['desperson']) || $_POST['desperson'] === '') {
+		User::setMsgError("Preencha o seu nome.");
+		header('Location: /profile');
+		exit;
+	}
+
+	if (!isset($_POST['desemail']) || $_POST['desemail'] === '') {
+		User::setMsgError("Preencha o seu e-mail.");
+		header('Location: /profile');
+		exit;
+	}
+
+	$user = User::getFromSession();
+
+	if ($_POST['desemail'] !== $user->getdesemail()) {
+
+		if (User::checkLoginExist($_POST['desemail']) === true) {
+
+			User::setMsgError("Este endereço de e-mail já está cadastrado.");
+			header('Location: /profile');
+			exit;
+
+		}
+
+	}
+
+	$_POST['iduser'] = $user->getiduser();
+	$_POST['inadmin'] = $user->getinadmin();
+	$_POST['despassword'] = $user->getdespassword(); // com se ele sempre alterasse a senha pela mesma
+	$_POST['deslogin'] = $_POST['desemail']; //define o login como próprio email dele
+
+	$user->setData($_POST);
+
+	$user->update();
+
+	$_SESSION[User::SESSION] = $user->getValues();
+
+	User::setSuccess("Dados alterados com sucesso");
+
+	header('Location: /profile');
+	exit;
 
 });
 
