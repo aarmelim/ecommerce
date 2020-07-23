@@ -1,6 +1,7 @@
 <?php 
 
 use \aarmelim\Model\User;
+use \aarmelim\Model\Cart;
 
 function formatPrice($vlprice)
 {
@@ -50,7 +51,7 @@ function getCartVl() {
 	
 	$totals = $cart->getProductsTotals();
 	
-	return $totals['vlprice'];
+	return formatPrice($totals['vlprice']);
 	
 }
 
