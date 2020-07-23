@@ -45,7 +45,7 @@ function getCartNrQtd() {
 	
 }
 
-function getCartVl() {
+function getCartVlSubTotal() {
 
 	$cart = Cart::getFromSession();
 	
