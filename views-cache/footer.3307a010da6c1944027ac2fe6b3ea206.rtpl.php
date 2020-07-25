@@ -1,5 +1,5 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><div class="footer-top-area">
-    <div class="zigzag-bottom"></div>
+    <!--<div class="zigzag-bottom"></div>-->
     <div class="container">
         <div class="row">
             <div class="col-md-3 col-sm-6">
