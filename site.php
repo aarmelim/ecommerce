@@ -69,6 +69,12 @@ $app->get("/cart", function(){
 
 	$cart = Cart::getFromSession();
 	
+	if ($cart->getProducts() == NULL) {
+
+		Cart::setMsgError("Ainda não foram adicionados produtos nesse carrinho");
+
+	} 
+
 	$page = new Page();
 
 	$page->setTpl("cart", [
@@ -312,8 +318,19 @@ $app->post("/login", function(){
 
 	}
 
-	header("Location: /checkout");
-	exit;
+	$cart = Cart::getFromSession();
+
+	if (!($cart->getProducts() == NULL)) {
+
+		header("Location: /checkout");
+		exit;
+
+	} else {
+
+		header("Location: /");
+		exit;
+
+	}
 
 });
 
@@ -321,7 +338,7 @@ $app->get("/logout", function(){
 
 	User::logout();
 
-	header("Location: /login");
+	header("Location: /");
 	exit;
 
 });

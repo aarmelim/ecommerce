@@ -83,7 +83,13 @@ jQuery(document).ready(function($){
     $('body').scrollspy({ 
         target: '.navbar-collapse',
         offset: 95
-    })      
+    })   
+
+    $.each($('.nav').find('li'), function() {
+        $(this).toggleClass('active',
+            $(this).find('a').attr('href') == window.location.pathname);
+    });
+
 });
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
