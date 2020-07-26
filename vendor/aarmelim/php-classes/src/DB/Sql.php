@@ -4,11 +4,6 @@ namespace aarmelim\DB;
 
 class Sql {
 
-	// const HOSTNAME = "mysql04.kci1.hospedagemdesites.ws";
-	// const USERNAME = "kci5";
-	// const PASSWORD = "jrkbt00@@";
-	// const DBNAME = "kci5";
-
 	const HOSTNAME = "127.0.0.1";
 	const USERNAME = "root";
 	const PASSWORD = "";
