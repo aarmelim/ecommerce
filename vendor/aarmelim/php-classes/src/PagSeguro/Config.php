@@ -12,6 +12,9 @@ class Config {
     const SANDBOX_TOKEN = "8A62A139E4594D80A366C75BDF872278";
     const PRODUCTION_TOKEN = "29ba1403-4429-4b8a-8cf7-f8477cd24e58998c7a424e21836bed3ed6e0dc09f1e83e7f-2f7c-484d-8e7c-55c0978b17f9";
 
+    const SANDBOX_SESSIONS = "https://ws.sandbox.pagseguro.uol.com.br/sessions";
+    const PRODUCTION_SESSIONS = "https://ws.pagseguro.uol.com.br/sessions";
+
     public static function getAuthentication():array
     {
 
@@ -31,6 +34,13 @@ class Config {
             ];
 
         }
+
+    }
+
+    public static function getUrlSessions():string
+    {
+
+        return (Config::SANDBOX === true) ? Config::SANDBOX_SESSIONS : Config::PRODUCTION_SESSIONS;
 
     }
 
