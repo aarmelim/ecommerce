@@ -1,11 +1,10 @@
 <?php
 
 use \aarmelim\Page;
-use \GuzzleHttp\Client;
 use \aarmelim\Model\User;
 use \aarmelim\Model\Order;
 use \aarmelim\PagSeguro\Config;
-
+use aarmelim\PagSeguro\Transporter;
 
 $app->get('/payment', function(){
 
@@ -33,19 +32,9 @@ $app->get('/payment', function(){
         "msgError"=>Order::getError(),
         "years"=>$years,
         "pagseguro"=>[
-            "urlJS"=>Config::getUrlJS()
+            "urlJS"=>Config::getUrlJS(),
+            "id"=>Transporter::createSession()
         ]
     ]);
-
-});
-
-$app->get('/payment/pagseguro', function() {
-
-    $client = new Client();
-    $res = $client->request('POST', Config::getUrlSessions() . "?" . http_build_query(Config::getAuthentication()), [
-        'verify'=>false
-    ]);
-
-    echo $res->getBody()->getContents();
 
 });
