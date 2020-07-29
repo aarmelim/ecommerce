@@ -259,9 +259,11 @@ $app->post("/checkout", function(){
 
 	$order->save();
 
-	$cart->removeSession(); 
+	$order->toSession();
 
-	header("Location: /order/".$order->getidorder()."/pagseguro");
+	//$cart->removeSession(); 
+
+	header("Location: /payment");
 	exit;
 
 });

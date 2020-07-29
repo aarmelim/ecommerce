@@ -54,7 +54,6 @@ class Mailer {
 		//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
         $this->mail->Port = 587;
         
-        $this->mail->isSMTP();
         $this->mail->SMTPOptions = array(
             'ssl' => array(
                 'verify_peer' => false,
