@@ -1,3 +1,4 @@
 banco-hdg.txt
 views-cache/
 vendor/aarmelim/php-classes/src/DB/Sql.php
+node_modules/

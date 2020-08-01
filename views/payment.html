@@ -298,7 +298,8 @@ scripts.push(function(){
             });
 
             $.each(response.paymentMethods.CREDIT_CARD.options, function(index, option){
-
+                // mostra as imagens de cartões de crédito disponíveis.
+                
                 $("#tab-credito .contents").append(tplCredit({
                     name: option.name,
                     image: option.images.MEDIUM.path
