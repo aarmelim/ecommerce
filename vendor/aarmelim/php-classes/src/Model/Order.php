@@ -5,6 +5,7 @@ namespace aarmelim\Model;
 use \aarmelim\DB\Sql;
 use \aarmelim\Model;
 use \aarmelim\Model\Cart;
+use \aarmelim\Model\Address;
 
 class Order extends Model {
 
@@ -85,7 +86,7 @@ class Order extends Model {
 
 	}
 
-	public function getCart():Cart
+	public function getCart()
 	{
 
 		$cart = new Cart();
@@ -222,6 +223,17 @@ class Order extends Model {
 
 	}
 
+	public function getAddress()	
+	//mesmo endereço será usado tanto para entrega quanto para fatura para ser enviado ao pagseguro
+	{
+
+		$address = new Address();
+
+		$address->setData($this->getValues());
+
+		return $address;
+
+	}
 
 }
 
