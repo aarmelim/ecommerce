@@ -56,7 +56,7 @@ class CreditCard {
 		$holder = $dom->importNode($holder, true);
 		$holder = $creditCard->appendChild($holder);
 
-		$billingAddress = $this->billingAddress->getDomElement("billingAddress");
+		$billingAddress = $this->billingAddress->getDomElement("billingAddress"); //aqui que estou mudando o nome do nó de acordo com o parametro passado, ja que o endereço de cobrança e de entrega são os mesmos nesse projeto
 		$billingAddress = $dom->importNode($billingAddress, true);
 		$billingAddress = $creditCard->appendChild($billingAddress);
 
