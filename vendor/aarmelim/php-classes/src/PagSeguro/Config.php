@@ -21,6 +21,8 @@ class Config {
     const MAX_INSTALLMENT_NO_INTEREST = 6; // Máximo de parcelas que será aceito sen juros
     const MAX_INSTALLMENT = 10; // Máximo de parcelas total que o nosso site irá suportar. Pagseguro não pede essa informação
 
+    const NOTIFICATION_URL = "http://www.annakstore.com.br/payment/notification";
+
     public static function getAuthentication():array
     {
 
