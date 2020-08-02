@@ -48,7 +48,7 @@ class Item {
 
 	}
 
-	public function getDOMElement():DOMElement
+	public function getDOMElement()
 	{
 	
 		$dom = new DOMDocument();
