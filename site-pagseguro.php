@@ -87,6 +87,11 @@ $app->post('/payment/credit', function(){
 
     $payment->setCreditCard($creditCard);
 
+    Transporter::sendTransaction($payment);
+
+    echo json_encode([
+        'success'=>true
+    ]);
 
     // para testar a criação do XML.
     //$dom = new DomDocument();
@@ -96,8 +101,8 @@ $app->post('/payment/credit', function(){
     //echo $dom->saveXML();
 
     // Para testar a geração do XML para "Payment" apenas
-    $dom = $payment->getDOMDocument();
-    echo $dom->saveXml();
+    //$dom = $payment->getDOMDocument();
+    //echo $dom->saveXml();
 
 });
 
