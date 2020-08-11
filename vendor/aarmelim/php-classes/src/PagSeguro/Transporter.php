@@ -43,7 +43,7 @@ class Transporter {
 
 		$order->get((int)$xml->reference);
 
-		$order->setPagSeguroTransactionResponse(
+		$order->setPagSeguroTransactionRespose(
 			(string)$xml->code,
 			(float)$xml->grossAmount,
 			(float)$xml->discountAmount,

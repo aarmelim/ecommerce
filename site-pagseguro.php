@@ -87,7 +87,7 @@ $app->post('/payment/credit', function(){
 
     $payment->setCreditCard($creditCard);
 
-    Transporter::sendTransaction($payment);
+    Transporter::sendTransaction($payment); //se quiser mandar o link do boleto mandaria aqui.
 
     echo json_encode([
         'success'=>true
