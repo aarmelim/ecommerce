@@ -17,6 +17,22 @@ use \aarmelim\PagSeguro\CreditCard\Holder;
 use \aarmelim\PagSeguro\Bank;
 use \aarmelim\Model\Order;
 
+$app->get('/payment/success', function(){
+
+    User::verifyLogin(false);
+
+    $order = new Order();
+
+    $order->getFromSession();
+
+    $page = new Page();
+
+    $page->setTpl('payment-success', [
+        'order'=>$order->getValues()
+    ]);
+
+});
+
 $app->post('/payment/credit', function(){
 
     User::verifyLogin(false);
@@ -136,5 +152,7 @@ $app->get('/payment', function(){
             "maxInstallment"=>Config::MAX_INSTALLMENT,
         ]
     ]);
+
+
 
 });
