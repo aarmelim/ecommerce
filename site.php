@@ -403,8 +403,19 @@ $app->post("/register", function()
 
 	User::login($_POST['email'], $_POST['password']);
 
-	header('Location: /checkout');
-	exit;
+	$cart = Cart::getFromSession();
+
+	if (!($cart->getProducts() == NULL)) {
+
+		header("Location: /checkout");
+		exit;
+
+	} else {
+
+		header("Location: /");
+		exit;
+
+	}
 
 });
 
